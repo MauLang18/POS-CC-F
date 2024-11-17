@@ -24,7 +24,7 @@ const searchOptions: SearchOptions[] = [
   },
   {
     label: "Numero de Documento",
-    value: 2,
+    value: 3,
     placeholder: "Buscar por Numero de Documento",
     validation: [GenericValidators.defaultName],
     validation_desc: "Sólo se permite letras en esta búsqueda.",

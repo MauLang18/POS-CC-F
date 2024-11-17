@@ -36,6 +36,36 @@ const childrenRoutes: VexRoutes = [
       containerEnabled: true,
     },
   },
+  {
+    path: "plantillas-de-documentos",
+    loadChildren: () =>
+      import("./pages/document-template/document-template.module").then(
+        (m) => m.DocumentTemplateModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "tipos-de-documentos",
+    loadChildren: () =>
+      import("./pages/document-type/document-type.module").then(
+        (m) => m.DocumentTypeModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "plantillas-de-emails",
+    loadChildren: () =>
+      import("./pages/email-template/email-template.module").then(
+        (m) => m.EmailTemplateModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
   // {
   //   path: "clientes",
   //   loadChildren: () =>

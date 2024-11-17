@@ -79,15 +79,70 @@ export class AppComponent {
       },
       {
         type: "link",
-        label: "Tipos de Creditos",
-        route: "tipos-de-creditos",
-        icon: IconsService.prototype.getIcon("icDepartment"),
-      },
-      {
-        type: "link",
         label: "Clientes",
         route: "clientes",
         icon: IconsService.prototype.getIcon("icDepartment"),
+      },
+      {
+        type: "dropdown",
+        label: "Datos",
+        icon: IconsService.prototype.getIcon("icManage"),
+        children: [
+          {
+            type: "link",
+            label: "Tipos de Creditos",
+            route: "tipos-de-creditos",
+          },
+          {
+            type: "link",
+            label: "Tipos de Documentos",
+            route: "tipos-de-documentos",
+          },
+        ],
+      },
+      {
+        type: "dropdown",
+        label: "Plantillas",
+        icon: IconsService.prototype.getIcon("icManage"),
+        children: [
+          {
+            type: "link",
+            label: "Plantillas de Documentos",
+            route: "plantillas-de-documentos",
+          },
+          {
+            type: "link",
+            label: "Plantillas de Email",
+            route: "plantillas-de-emails",
+          },
+        ],
+      },
+      {
+        type: "dropdown",
+        label: "Procesos",
+        icon: IconsService.prototype.getIcon("icSales"),
+        children: [
+          {
+            type: "link",
+            label: "Compras",
+            route: "compras",
+          },
+          {
+            type: "link",
+            label: "Cotizaciones",
+            route: "cotizaciones",
+          },
+          {
+            type: "link",
+            label: "Ventas",
+            route: "ventas",
+          },
+          {
+            type: "link",
+            label: "Facturas",
+            route: "facturas",
+          },
+        ],
       },
       // {
       //   type: "dropdown",
