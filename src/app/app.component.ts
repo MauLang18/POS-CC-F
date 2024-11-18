@@ -72,6 +72,33 @@ export class AppComponent {
 
     this.navigationService.items = [
       {
+        type: "dropdown",
+        label: "Catálogo",
+        icon: IconsService.prototype.getIcon("icManage"),
+        children: [
+          {
+            type: "link",
+            label: "Categorias",
+            route: "categorias",
+          },
+          {
+            type: "link",
+            label: "Productos y Servicios",
+            route: "productos-servicios",
+          },
+          {
+            type: "link",
+            label: "Licencias",
+            route: "licencias",
+          },
+          {
+            type: "link",
+            label: "Proyectos",
+            route: "proyectos",
+          },
+        ],
+      },
+      {
         type: "link",
         label: "Clientes",
         route: "clientes",
@@ -96,6 +123,16 @@ export class AppComponent {
             type: "link",
             label: "Tipos de Licencias",
             route: "tipos-de-licencias",
+          },
+          {
+            type: "link",
+            label: "Metodos de Pagos",
+            route: "metodos-de-pago",
+          },
+          {
+            type: "link",
+            label: "Status",
+            route: "status",
           },
         ],
       },
@@ -140,33 +177,6 @@ export class AppComponent {
             type: "link",
             label: "Facturas",
             route: "facturas",
-          },
-        ],
-      },
-      {
-        type: "dropdown",
-        label: "Catálogo",
-        icon: IconsService.prototype.getIcon("icManage"),
-        children: [
-          {
-            type: "link",
-            label: "Categorias",
-            route: "categorias",
-          },
-          {
-            type: "link",
-            label: "Productos y Servicios",
-            route: "productos-servicios",
-          },
-          {
-            type: "link",
-            label: "Licencias",
-            route: "licencias",
-          },
-          {
-            type: "link",
-            label: "Proyectos",
-            route: "proyectos",
           },
         ],
       },

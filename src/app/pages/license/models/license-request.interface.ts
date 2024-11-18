@@ -3,7 +3,7 @@ export interface LicenseRequest {
   licenseTypeId: number;
   issueDate: Date;
   expirationDate: Date;
-  stateId: number;
+  state: number;
 }
 
 export interface LicenseUpdateRequest {
@@ -12,5 +12,5 @@ export interface LicenseUpdateRequest {
   licenseTypeId: number;
   issueDate: Date;
   expirationDate: Date;
-  stateId: number;
+  state: number;
 }

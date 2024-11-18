@@ -1,0 +1,107 @@
+<form (ngSubmit)="productServiceSave()" [formGroup]="form">
+  <div mat-dialog-title class="flex justify-between">
+    <h2 class="headline m-0 text-xl text-accent">
+      <strong>Gestión de Productos o Servicios</strong>
+    </h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="code" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        Campo Nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <app-select-autocomplete
+      label="Categoria"
+      [control]="form.get('categoryId')"
+      [required]="true"
+      [listOptions]="categorySelect"
+    ></app-select-autocomplete>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" formControlName="price" />
+      <mat-error *ngIf="form.get('price').hasError('required')">
+        Campo Precio es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Tipo</mat-label>
+      <mat-select formControlName="isService" required>
+        <mat-option [value]="0">Servicio</mat-option>
+        <mat-option [value]="1">Producto</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('isService').hasError('required')">
+        Campo Tipo es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Cantidad</mat-label>
+        <input matInput type="number" formControlName="stockQuantity" />
+        <mat-error *ngIf="form.get('stockQuantity').hasError('required')">
+          Campo Cantidad es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <app-select-autocomplete
+        label="Unidad"
+        [control]="form.get('unitId')"
+        [required]="true"
+        [listOptions]="unitSelect"
+      ></app-select-autocomplete>
+    </div>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Descripcion</mat-label>
+      <input matInput formControlName="description" />
+      <mat-error *ngIf="form.get('description').hasError('required')">
+        Campo Descripcion es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('image').value"
+      (selectedImage)="selectedImage($event)"
+    ></app-img-selector>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="state">
+        <mat-option
+          *ngFor="let state of configs.statesSelect"
+          [value]="state.value"
+        >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('state').hasError('required')">
+        Campo Estado es requerido.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CANCELAR</button>
+    <button
+      color="purple"
+      class="bg-accent text-accent-contrast"
+      mat-button
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      GUARDAR
+    </button>
+  </mat-dialog-actions>
+</form>

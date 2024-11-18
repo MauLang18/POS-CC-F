@@ -88,6 +88,33 @@ const childrenRoutes: VexRoutes = [
       containerEnabled: true,
     },
   },
+  {
+    path: "metodos-de-pago",
+    loadChildren: () =>
+      import("./pages/payment-method/payment-method.module").then(
+        (m) => m.PaymentMethodModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "productos-servicios",
+    loadChildren: () =>
+      import("./pages/product-service/product-service.module").then(
+        (m) => m.ProductServiceModule
+      ),
+  },
+  {
+    path: "proyectos",
+    loadChildren: () =>
+      import("./pages/project/project.module").then((m) => m.ProjectModule),
+  },
+  {
+    path: "status",
+    loadChildren: () =>
+      import("./pages/status/status.module").then((m) => m.StatusModule),
+  },
   // {
   //   path: "clientes",
   //   loadChildren: () =>
