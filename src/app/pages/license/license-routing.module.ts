@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
+import { LicenseListComponent } from './components/license-list/license-list.component';
 
 const routes: Routes = [
   {
     path: "",
-    component: InvoiceListComponent,
+    component: LicenseListComponent,
     data: {
       scrollDisabled: true,
       toolbarShadowEnabled: true,
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class InvoiceRoutingModule { }
+export class LicenseRoutingModule { }

@@ -1,9 +1,99 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { endpoint } from "@shared/apis/endpoint";
+import { getIcon } from "@shared/functions/helpers";
+import { BaseResponse } from "@shared/models/base-api-response.interface";
+import { AlertService } from "@shared/services/alert.service";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { environment as env } from "src/environments/environment";
+import { InvoiceRequest, InvoiceUpdateRequest } from "../models/invoice-request.interface";
+import {
+  InvoiceByIdResponse,
+  InvoiceResponse,
+} from "../models/invoice-response.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
+  constructor(private _http: HttpClient, private _alert: AlertService) {}
 
-  constructor() { }
+  GetAll(
+    size: string,
+    sort: string,
+    order: string,
+    page: number,
+    getInputs: string
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${
+      endpoint.LIST_INVOICES
+    }?records=${size}&sort=${sort}&order=${order}&numPage=${
+      page + 1
+    }${getInputs}`;
+
+    return this._http.get<BaseResponse>(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        resp.data.forEach(function (prov: InvoiceResponse) {
+          prov.icEdit = getIcon("icEdit", "Editar Factura", true);
+          prov.icDownload = getIcon("icDownload", "Descargar y Enviar Factura", true);
+        });
+        return resp;
+      })
+    );
+  }
+
+  invoiceById(invoiceId: number): Observable<InvoiceByIdResponse> {
+    const requestUrl = `${env.api}${endpoint.INVOICE_BY_ID}${invoiceId}`;
+    return this._http.get(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        return resp.data;
+      })
+    );
+  }
+
+  invoiceRegister(invoice: InvoiceRequest): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.INVOICE_REGISTER}`;
+    return this._http.post(requestUrl, invoice).pipe(
+      map((resp: BaseResponse) => {
+        return resp;
+      })
+    );
+  }
+
+  invoiceEdit(
+    invoice: InvoiceUpdateRequest 
+  ): Observable<BaseResponse> {
+    const requestUrl = `${env.api}${endpoint.INVOICE_EDIT}`;
+    return this._http.put<BaseResponse>(requestUrl, invoice);
+  }
+
+  invoiceRemove(invoiceId: number): Observable<void> {
+    const requestUrl = `${env.api}${endpoint.INVOICE_DELETE}${invoiceId}`;
+    return this._http.delete(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this._alert.success("Excelente", resp.message);
+        }
+      })
+    );
+  }
+
+  invoiceReport(data: InvoiceResponse): void {
+    const requestUrl = `${env.api}${endpoint.INVOICE_REPORT}${data.invoiceId}`;
+
+    this._http
+      .get(requestUrl, { responseType: "blob", observe: "response" })
+      .subscribe((response) => {
+        let fileName = `${data.voucherNumber}.pdf`; 
+
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(response.body);
+        link.download = fileName;
+        link.click();
+
+        link.remove();
+        window.URL.revokeObjectURL(link.href);
+      });
+  }
 }

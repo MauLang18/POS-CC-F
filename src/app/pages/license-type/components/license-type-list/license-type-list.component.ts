@@ -3,30 +3,30 @@ import { CustomTitleService } from "@shared/services/custom-title.service";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { InvoiceService } from "../../services/invoice.service";
-import { componentSettings } from "./invoice-list-config";
+import { LicenseTypeService } from "../../services/license-type.service";
+import { componentSettings } from "./license-type-list-config";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { InvoiceManageComponent } from "../invoice-manage/invoice-manage.component";
-import { InvoiceResponse } from "../../models/invoice-response.interface";
+import { LicenseTypeManageComponent } from "../license-type-manage/license-type-manage.component";
+import { LicenseTypeResponse } from "../../models/license-type-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 
 @Component({
-  selector: "vex-invoice-list",
-  templateUrl: "./invoice-list.component.html",
-  styleUrls: ["./invoice-list.component.scss"],
+  selector: "vex-license-type-list",
+  templateUrl: "./license-type-list.component.html",
+  styleUrls: ["./license-type-list.component.scss"],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class InvoiceListComponent implements OnInit {
+export class LicenseTypeListComponent implements OnInit {
   component: any;
 
   constructor(
     customTitle: CustomTitleService,
-    public _invoiceService: InvoiceService,
+    public _licenseTypeService: LicenseTypeService,
     public _dialog: MatDialog
   ) {
-    customTitle.set("Facturas");
+    customTitle.set("Tipos de Licencias");
   }
 
   ngOnInit(): void {
@@ -85,40 +85,40 @@ export class InvoiceListComponent implements OnInit {
 
   openDialogRegister() {
     this._dialog
-      .open(InvoiceManageComponent, {
+      .open(LicenseTypeManageComponent, {
         disableClose: true,
         width: "400px",
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.setGetInputsInvoices(true);
+          this.setGetInputsLicenseTypes(true);
         }
       });
   }
 
-  rowClick(rowClick: RowClick<InvoiceResponse>) {
+  rowClick(rowClick: RowClick<LicenseTypeResponse>) {
     let action = rowClick.action;
-    let invoice = rowClick.row;
+    let licenseType = rowClick.row;
 
     switch (action) {
       case "edit":
-        this.invoiceEdit(invoice);
+        this.licenseTypeEdit(licenseType);
         break;
-      case "report":
-          this.invoiceReport(invoice);
-          break;
+      case "remove":
+        this.licenseTypeRemove(licenseType);
+        break;
     }
 
     return false;
   }
 
-  invoiceEdit(invoiceData: InvoiceResponse) {
+  licenseTypeEdit(licenseTypeData: LicenseTypeResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = invoiceData;
+    dialogConfig.data = licenseTypeData;
 
     this._dialog
-      .open(InvoiceManageComponent, {
+      .open(LicenseTypeManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -126,21 +126,38 @@ export class InvoiceListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsInvoices(true);
+          this.setGetInputsLicenseTypes(true);
         }
       });
   }
 
-  invoiceReport(invoice: InvoiceResponse) {
-    this._invoiceService.invoiceReport(invoice);
+  licenseTypeRemove(licenseTypeData: LicenseTypeResponse) {
+    Swal.fire({
+      title: `¿Realmente deseas eliminar el tipo de licenseo ${licenseTypeData.name}?`,
+      text: "Se borrará de forma permanente!",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "rgb(210, 155, 253)",
+      cancelButtonColor: "rgb(79, 109, 253)",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      width: 430,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._licenseTypeService
+          .licenseTypeRemove(licenseTypeData.licenseTypeId)
+          .subscribe(() => this.setGetInputsLicenseTypes(true));
+      }
+    });
   }
 
-  setGetInputsInvoices(refresh: boolean) {
+  setGetInputsLicenseTypes(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `Invoice?Download=True`;
+    return `LicenseType?Download=True`;
   }
 }

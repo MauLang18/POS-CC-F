@@ -9,9 +9,7 @@ const childrenRoutes: VexRoutes = [
   {
     path: "categorias",
     loadChildren: () =>
-      import("./pages/category/category.module").then(
-        (m) => m.CategoryModule
-      ),
+      import("./pages/category/category.module").then((m) => m.CategoryModule),
     data: {
       containerEnabled: true,
     },
@@ -29,9 +27,7 @@ const childrenRoutes: VexRoutes = [
   {
     path: "clientes",
     loadChildren: () =>
-      import("./pages/customer/customer.module").then(
-        (m) => m.CustomerModule
-      ),
+      import("./pages/customer/customer.module").then((m) => m.CustomerModule),
     data: {
       containerEnabled: true,
     },
@@ -61,6 +57,32 @@ const childrenRoutes: VexRoutes = [
     loadChildren: () =>
       import("./pages/email-template/email-template.module").then(
         (m) => m.EmailTemplateModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "facturas",
+    loadChildren: () =>
+      import("./pages/invoice/invoice.module").then((m) => m.InvoiceModule),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "licencias",
+    loadChildren: () =>
+      import("./pages/license/license.module").then((m) => m.LicenseModule),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "tipos-de-licencias",
+    loadChildren: () =>
+      import("./pages/license-type/license-type.module").then(
+        (m) => m.LicenseTypeModule
       ),
     data: {
       containerEnabled: true,

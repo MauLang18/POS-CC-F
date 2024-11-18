@@ -3,30 +3,30 @@ import { CustomTitleService } from "@shared/services/custom-title.service";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { InvoiceService } from "../../services/invoice.service";
-import { componentSettings } from "./invoice-list-config";
+import { LicenseService } from "../../services/license.service";
+import { componentSettings } from "./license-list-config";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { InvoiceManageComponent } from "../invoice-manage/invoice-manage.component";
-import { InvoiceResponse } from "../../models/invoice-response.interface";
+import { LicenseManageComponent } from "../license-manage/license-manage.component";
+import { LicenseResponse } from "../../models/license-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 
 @Component({
-  selector: "vex-invoice-list",
-  templateUrl: "./invoice-list.component.html",
-  styleUrls: ["./invoice-list.component.scss"],
+  selector: "vex-license-list",
+  templateUrl: "./license-list.component.html",
+  styleUrls: ["./license-list.component.scss"],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class InvoiceListComponent implements OnInit {
+export class LicenseListComponent implements OnInit {
   component: any;
 
   constructor(
     customTitle: CustomTitleService,
-    public _invoiceService: InvoiceService,
+    public _licenseService: LicenseService,
     public _dialog: MatDialog
   ) {
-    customTitle.set("Facturas");
+    customTitle.set("Licencias");
   }
 
   ngOnInit(): void {
@@ -85,40 +85,40 @@ export class InvoiceListComponent implements OnInit {
 
   openDialogRegister() {
     this._dialog
-      .open(InvoiceManageComponent, {
+      .open(LicenseManageComponent, {
         disableClose: true,
         width: "400px",
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.setGetInputsInvoices(true);
+          this.setGetInputsLicenses(true);
         }
       });
   }
 
-  rowClick(rowClick: RowClick<InvoiceResponse>) {
+  rowClick(rowClick: RowClick<LicenseResponse>) {
     let action = rowClick.action;
-    let invoice = rowClick.row;
+    let license = rowClick.row;
 
     switch (action) {
       case "edit":
-        this.invoiceEdit(invoice);
+        this.licenseEdit(license);
         break;
-      case "report":
-          this.invoiceReport(invoice);
-          break;
+      case "remove":
+        this.licenseRemove(license);
+        break;
     }
 
     return false;
   }
 
-  invoiceEdit(invoiceData: InvoiceResponse) {
+  licenseEdit(licenseData: LicenseResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = invoiceData;
+    dialogConfig.data = licenseData;
 
     this._dialog
-      .open(InvoiceManageComponent, {
+      .open(LicenseManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -126,21 +126,38 @@ export class InvoiceListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsInvoices(true);
+          this.setGetInputsLicenses(true);
         }
       });
   }
 
-  invoiceReport(invoice: InvoiceResponse) {
-    this._invoiceService.invoiceReport(invoice);
+  licenseRemove(licenseData: LicenseResponse) {
+    Swal.fire({
+      title: `¿Realmente deseas eliminar la licencia ${licenseData.licenseKey}?`,
+      text: "Se borrará de forma permanente!",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "rgb(210, 155, 253)",
+      cancelButtonColor: "rgb(79, 109, 253)",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      width: 430,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._licenseService
+          .licenseRemove(licenseData.licenseId)
+          .subscribe(() => this.setGetInputsLicenses(true));
+      }
+    });
   }
 
-  setGetInputsInvoices(refresh: boolean) {
+  setGetInputsLicenses(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `Invoice?Download=True`;
+    return `License?Download=True`;
   }
 }

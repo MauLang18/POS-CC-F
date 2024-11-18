@@ -73,12 +73,6 @@ export class AppComponent {
     this.navigationService.items = [
       {
         type: "link",
-        label: "Categorias",
-        route: "categorias",
-        icon: IconsService.prototype.getIcon("icDepartment"),
-      },
-      {
-        type: "link",
         label: "Clientes",
         route: "clientes",
         icon: IconsService.prototype.getIcon("icDepartment"),
@@ -97,6 +91,11 @@ export class AppComponent {
             type: "link",
             label: "Tipos de Documentos",
             route: "tipos-de-documentos",
+          },
+          {
+            type: "link",
+            label: "Tipos de Licencias",
+            route: "tipos-de-licencias",
           },
         ],
       },
@@ -144,52 +143,33 @@ export class AppComponent {
           },
         ],
       },
-      // {
-      //   type: "dropdown",
-      //   label: "Catálogo",
-      //   icon: IconsService.prototype.getIcon("icManage"),
-      //   children: [
-      //     {
-      //       type: "link",
-      //       label: "Categorias",
-      //       route: "categorias",
-      //     },
-      //     {
-      //       type: "link",
-      //       label: "Productos",
-      //       route: "productos",
-      //     },
-      //   ],
-      // },
-      // {
-      //   type: "link",
-      //   label: "Proveedores",
-      //   route: "proveedores",
-      //   icon: IconsService.prototype.getIcon("icProvider"),
-      // },
-      // {
-      //   type: "link",
-      //   label: "Clientes",
-      //   route: "clientes",
-      //   icon: IconsService.prototype.getIcon("icProvider"),
-      // },
-      // {
-      //   type: "dropdown",
-      //   label: "Procesos",
-      //   icon: IconsService.prototype.getIcon("icSales"),
-      //   children: [
-      //     {
-      //       type: "link",
-      //       label: "Proceso de Compras",
-      //       route: "proceso-compras",
-      //     },
-      //     {
-      //       type: "link",
-      //       label: "Proceso de Ventas",
-      //       route: "proceso-ventas",
-      //     },
-      //   ],
-      // },
+      {
+        type: "dropdown",
+        label: "Catálogo",
+        icon: IconsService.prototype.getIcon("icManage"),
+        children: [
+          {
+            type: "link",
+            label: "Categorias",
+            route: "categorias",
+          },
+          {
+            type: "link",
+            label: "Productos y Servicios",
+            route: "productos-servicios",
+          },
+          {
+            type: "link",
+            label: "Licencias",
+            route: "licencias",
+          },
+          {
+            type: "link",
+            label: "Proyectos",
+            route: "proyectos",
+          },
+        ],
+      },
     ];
   }
 }
