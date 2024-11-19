@@ -105,6 +105,18 @@ export class AppComponent {
         icon: IconsService.prototype.getIcon("icDepartment"),
       },
       {
+        type: "link",
+        label: "Proveedores",
+        route: "proveedores",
+        icon: IconsService.prototype.getIcon("icDepartment"),
+      },
+      {
+        type: "link",
+        label: "Usuarios",
+        route: "usuarios",
+        icon: IconsService.prototype.getIcon("icDepartment"),
+      },
+      {
         type: "dropdown",
         label: "Datos",
         icon: IconsService.prototype.getIcon("icManage"),
@@ -134,6 +146,21 @@ export class AppComponent {
             label: "Status",
             route: "status",
           },
+          {
+            type: "link",
+            label: "Tipos de Plantillas",
+            route: "tipos-de-plantillas",
+          },
+          {
+            type: "link",
+            label: "Tipos de Vouchers",
+            route: "tipos-de-vouchers",
+          },
+          {
+            type: "link",
+            label: "Unidades de Medida",
+            route: "unidades-de-medida",
+          },
         ],
       },
       {
@@ -161,7 +188,7 @@ export class AppComponent {
           {
             type: "link",
             label: "Compras",
-            route: "compras",
+            route: "proceso-compra",
           },
           {
             type: "link",
@@ -171,7 +198,7 @@ export class AppComponent {
           {
             type: "link",
             label: "Ventas",
-            route: "ventas",
+            route: "proceso-venta",
           },
           {
             type: "link",

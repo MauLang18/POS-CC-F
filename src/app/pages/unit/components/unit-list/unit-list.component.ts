@@ -3,35 +3,39 @@ import { CustomTitleService } from "@shared/services/custom-title.service";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { QuoteService } from "../../services/quote.service";
-import { componentSettings } from "./quote-list-config";
+import { UnitService } from "../../services/unit.service";
+import { componentSettings } from "./unit-list-config";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
-import { Router } from "@angular/router";
-import { RowClick } from "@shared/models/row-click.interface";
-import { QuoteResponse } from "../../models/quote-response.interface";
-import Swal from "sweetalert2";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { QuoteChangeComponent } from "../quote-change/quote-change.component";
+import { UnitManageComponent } from "../unit-manage/unit-manage.component";
+import { UnitResponse } from "../../models/unit-response.interface";
+import { RowClick } from "@shared/models/row-click.interface";
+import Swal from "sweetalert2";
 
 @Component({
-  selector: "vex-quote-list",
-  templateUrl: "./quote-list.component.html",
-  styleUrls: ["./quote-list.component.scss"],
+  selector: "vex-unit-list",
+  templateUrl: "./unit-list.component.html",
+  styleUrls: ["./unit-list.component.scss"],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class QuoteListComponent implements OnInit {
-  component;
+export class UnitListComponent implements OnInit {
+  component: any;
+
   constructor(
     customTitle: CustomTitleService,
-    public _quoteService: QuoteService,
-    private _router: Router,
-    private _dialog: MatDialog
+    public _unitService: UnitService,
+    public _dialog: MatDialog
   ) {
-    customTitle.set("Cotizaciones");
+    customTitle.set("Unidades de Medida");
   }
 
   ngOnInit(): void {
     this.component = componentSettings;
+  }
+
+  setMenu(value: number) {
+    this.component.filters.stateFilter = value;
+    this.formatGetInputs();
   }
 
   search(data: FiltersBox) {
@@ -58,6 +62,10 @@ export class QuoteListComponent implements OnInit {
       str += `&numFilter=${this.component.filters.numFilter}&textFilter=${this.component.filters.textFilter}`;
     }
 
+    if (this.component.filters.stateFilter != null) {
+      str += `&stateFilter=${this.component.filters.stateFilter}`;
+    }
+
     if (
       this.component.filters.startDate != "" &&
       this.component.filters.endDate != ""
@@ -75,39 +83,42 @@ export class QuoteListComponent implements OnInit {
     this.component.getInputs = str;
   }
 
-  rowClick(rowClick: RowClick<QuoteResponse>) {
+  openDialogRegister() {
+    this._dialog
+      .open(UnitManageComponent, {
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.setGetInputsUnits(true);
+        }
+      });
+  }
+
+  rowClick(rowClick: RowClick<UnitResponse>) {
     let action = rowClick.action;
-    let quote = rowClick.row;
+    let unit = rowClick.row;
 
     switch (action) {
-      case "viewDetail":
-        this.quoteViewDetail(quote);
+      case "edit":
+        this.unitEdit(unit);
         break;
-      case "report":
-        this.quoteReport(quote);
-        break;
-      case "cancel":
-        this.quoteCancel(quote);
+      case "remove":
+        this.unitRemove(unit);
         break;
     }
 
     return false;
   }
 
-  quoteViewDetail(quote: QuoteResponse) {
-    this._router.navigate(["/proceso-cotizacion/crear", quote.quoteId]);
-  }
-
-  quoteReport(quote: QuoteResponse) {
-    this._quoteService.quoteReport(quote);
-  }
-
-  quoteCancel(quoteData: QuoteResponse) {
+  unitEdit(unitData: UnitResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = quoteData;
+    dialogConfig.data = unitData;
 
     this._dialog
-      .open(QuoteChangeComponent, {
+      .open(UnitManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -115,21 +126,38 @@ export class QuoteListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsQuote(true);
+          this.setGetInputsUnits(true);
         }
       });
   }
 
-  setGetInputsQuote(refresh: boolean) {
+  unitRemove(unitData: UnitResponse) {
+    Swal.fire({
+      title: `¿Realmente deseas eliminar el tipo de vouchero ${unitData.name}?`,
+      text: "Se borrará de forma permanente!",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "rgb(210, 155, 253)",
+      cancelButtonColor: "rgb(79, 109, 253)",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      width: 430,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._unitService
+          .unitRemove(unitData.unitId)
+          .subscribe(() => this.setGetInputsUnits(true));
+      }
+    });
+  }
+
+  setGetInputsUnits(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `Quote?Download=True`;
-  }
-
-  newQuote() {
-    this._router.navigate(["/proceso-cotizacion/crear"]);
+    return `Unit?Download=True`;
   }
 }

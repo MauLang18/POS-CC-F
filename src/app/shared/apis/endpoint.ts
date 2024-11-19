@@ -113,7 +113,7 @@ export const endpoint = {
   LIST_SELECT_QUOTE: "Quote/Select",
   QUOTE_REGISTER: "Quote/Create/",
   QUOTE_CANCEL: "Quote/Delete/",
-  QUOTE_EDIT: "Quote/Update",
+  QUOTE_EDIT: "Quote/Update/",
 
   // REPORT MODULE
   QUOTE_EMAIL_REPORT: "Report/CotizacionEmail/",

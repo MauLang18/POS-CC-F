@@ -3,35 +3,39 @@ import { CustomTitleService } from "@shared/services/custom-title.service";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { QuoteService } from "../../services/quote.service";
-import { componentSettings } from "./quote-list-config";
+import { SupplierService } from "../../services/supplier.service";
+import { componentSettings } from "./supplier-list-config";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
-import { Router } from "@angular/router";
-import { RowClick } from "@shared/models/row-click.interface";
-import { QuoteResponse } from "../../models/quote-response.interface";
-import Swal from "sweetalert2";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { QuoteChangeComponent } from "../quote-change/quote-change.component";
+import { SupplierManageComponent } from "../supplier-manage/supplier-manage.component";
+import { SupplierResponse } from "../../models/supplier-response.interface";
+import { RowClick } from "@shared/models/row-click.interface";
+import Swal from "sweetalert2";
 
 @Component({
-  selector: "vex-quote-list",
-  templateUrl: "./quote-list.component.html",
-  styleUrls: ["./quote-list.component.scss"],
+  selector: "vex-supplier-list",
+  templateUrl: "./supplier-list.component.html",
+  styleUrls: ["./supplier-list.component.scss"],
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
 })
-export class QuoteListComponent implements OnInit {
-  component;
+export class SupplierListComponent implements OnInit {
+  component: any;
+
   constructor(
     customTitle: CustomTitleService,
-    public _quoteService: QuoteService,
-    private _router: Router,
-    private _dialog: MatDialog
+    public _supplierService: SupplierService,
+    public _dialog: MatDialog
   ) {
-    customTitle.set("Cotizaciones");
+    customTitle.set("Proveedores");
   }
 
   ngOnInit(): void {
     this.component = componentSettings;
+  }
+
+  setMenu(value: number) {
+    this.component.filters.stateFilter = value;
+    this.formatGetInputs();
   }
 
   search(data: FiltersBox) {
@@ -58,6 +62,10 @@ export class QuoteListComponent implements OnInit {
       str += `&numFilter=${this.component.filters.numFilter}&textFilter=${this.component.filters.textFilter}`;
     }
 
+    if (this.component.filters.stateFilter != null) {
+      str += `&stateFilter=${this.component.filters.stateFilter}`;
+    }
+
     if (
       this.component.filters.startDate != "" &&
       this.component.filters.endDate != ""
@@ -75,39 +83,42 @@ export class QuoteListComponent implements OnInit {
     this.component.getInputs = str;
   }
 
-  rowClick(rowClick: RowClick<QuoteResponse>) {
+  openDialogRegister() {
+    this._dialog
+      .open(SupplierManageComponent, {
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.setGetInputsSuppliers(true);
+        }
+      });
+  }
+
+  rowClick(rowClick: RowClick<SupplierResponse>) {
     let action = rowClick.action;
-    let quote = rowClick.row;
+    let supplier = rowClick.row;
 
     switch (action) {
-      case "viewDetail":
-        this.quoteViewDetail(quote);
+      case "edit":
+        this.supplierEdit(supplier);
         break;
-      case "report":
-        this.quoteReport(quote);
-        break;
-      case "cancel":
-        this.quoteCancel(quote);
+      case "remove":
+        this.supplierRemove(supplier);
         break;
     }
 
     return false;
   }
 
-  quoteViewDetail(quote: QuoteResponse) {
-    this._router.navigate(["/proceso-cotizacion/crear", quote.quoteId]);
-  }
-
-  quoteReport(quote: QuoteResponse) {
-    this._quoteService.quoteReport(quote);
-  }
-
-  quoteCancel(quoteData: QuoteResponse) {
+  supplierEdit(supplierData: SupplierResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = quoteData;
+    dialogConfig.data = supplierData;
 
     this._dialog
-      .open(QuoteChangeComponent, {
+      .open(SupplierManageComponent, {
         data: dialogConfig,
         disableClose: true,
         width: "400px",
@@ -115,21 +126,38 @@ export class QuoteListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsQuote(true);
+          this.setGetInputsSuppliers(true);
         }
       });
   }
 
-  setGetInputsQuote(refresh: boolean) {
+  supplierRemove(supplierData: SupplierResponse) {
+    Swal.fire({
+      title: `¿Realmente deseas eliminar la categoria ${supplierData.name}?`,
+      text: "Se borrará de forma permanente!",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "rgb(210, 155, 253)",
+      cancelButtonColor: "rgb(79, 109, 253)",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      width: 430,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._supplierService
+          .supplierRemove(supplierData.supplierId)
+          .subscribe(() => this.setGetInputsSuppliers(true));
+      }
+    });
+  }
+
+  setGetInputsSuppliers(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }
 
   get getDownloadUrl() {
-    return `Quote?Download=True`;
-  }
-
-  newQuote() {
-    this._router.navigate(["/proceso-cotizacion/crear"]);
+    return `Supplier?Download=True`;
   }
 }

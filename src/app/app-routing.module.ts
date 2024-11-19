@@ -120,30 +120,50 @@ const childrenRoutes: VexRoutes = [
     loadChildren: () =>
       import("./pages/quote/quote.module").then((m) => m.QuoteModule),
   },
-  // {
-  //   path: "clientes",
-  //   loadChildren: () =>
-  //     import("./pages/client/client.module").then((m) => m.ClientModule),
-  // },
-  // {
-  //   path: "almacenes",
-  //   loadChildren: () =>
-  //     import("./pages/warehouse/warehouse.module").then(
-  //       (m) => m.WarehouseModule
-  //     ),
-  // },
-  // {
-  //   path: "productos",
-  //   loadChildren: () =>
-  //     import("./pages/product/product.module").then((m) => m.ProductModule),
-  // },
-  // {
-  //   path: "proceso-ventas",
-  //   loadChildren: () =>
-  //     import("./pages/sale/sale.module").then(
-  //       (m) => m.SaleModule
-  //     ),
-  // },
+  {
+    path: "tipos-de-plantillas",
+    loadChildren: () =>
+      import("./pages/template-type/template-type.module").then(
+        (m) => m.TemplateTypeModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "tipos-de-vouchers",
+    loadChildren: () =>
+      import("./pages/voucher-type/voucher-type.module").then(
+        (m) => m.VoucherTypeModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "unidades-de-medida",
+    loadChildren: () =>
+      import("./pages/unit/unit.module").then((m) => m.UnitModule),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "usuarios",
+    loadChildren: () =>
+      import("./pages/user/user.module").then((m) => m.UserModule),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "proveedores",
+    loadChildren: () =>
+      import("./pages/supplier/supplier.module").then((m) => m.SupplierModule),
+    data: {
+      containerEnabled: true,
+    },
+  },
   {
     path: "**",
     component: NotFoundComponent,

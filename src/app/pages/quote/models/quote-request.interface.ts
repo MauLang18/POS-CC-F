@@ -18,3 +18,8 @@ export interface QuoteDetailRequest {
   price: number;
   total: number;
 }
+
+export interface QuoteUpdateRequest {
+  quoteId: number;
+  statusId: number;
+}

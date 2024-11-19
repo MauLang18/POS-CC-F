@@ -7,7 +7,10 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment as env } from "src/environments/environment";
 import { getIcon } from "@shared/functions/helpers";
-import { QuoteRequest } from "../models/quote-request.interface";
+import {
+  QuoteRequest,
+  QuoteUpdateRequest,
+} from "../models/quote-request.interface";
 import {
   QuoteByIdResponse,
   QuoteResponse,
@@ -103,14 +106,8 @@ export class QuoteService {
     return this._http.post<BaseResponse>(requestUrl, quote);
   }
 
-  quoteCancel(quoteId: number): Observable<void> {
-    const requestUrl = `${env.api}${endpoint.QUOTE_CANCEL}${quoteId}`;
-    return this._http.put(requestUrl, "").pipe(
-      map((resp: BaseResponse) => {
-        if (resp.isSuccess) {
-          this._alert.success("Excelente", resp.message);
-        }
-      })
-    );
+  quoteEdit(quote: QuoteUpdateRequest) {
+    const requestUrl = `${env.api}${endpoint.QUOTE_EDIT}`;
+    return this._http.put<BaseResponse>(requestUrl, quote);
   }
 }
