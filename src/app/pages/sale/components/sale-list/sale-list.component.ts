@@ -10,6 +10,8 @@ import { Router } from "@angular/router";
 import { RowClick } from "@shared/models/row-click.interface";
 import { SaleResponse } from "../../models/sale-response.interface";
 import Swal from "sweetalert2";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { SaleChangeComponent } from "../sale-change/sale-change.component";
 
 @Component({
   selector: "vex-sale-list",
@@ -22,6 +24,7 @@ export class SaleListComponent implements OnInit {
   constructor(
     customTitle: CustomTitleService,
     public _saleService: SaleService,
+    private _dialog: MatDialog,
     private _router: Router
   ) {
     customTitle.set("Ventas");
@@ -81,7 +84,7 @@ export class SaleListComponent implements OnInit {
         this.saleViewDetail(sale);
         break;
       case "report":
-        //this.saleReport(sale);
+        this.saleReport(sale);
         break;
       case "cancel":
         this.saleCancel(sale);
@@ -92,12 +95,26 @@ export class SaleListComponent implements OnInit {
   }
 
   saleViewDetail(sale: SaleResponse) {
-    this._router.navigate(["/proceso-ventas/crear", sale.saleId]);
+    this._router.navigate(["/proceso-venta/crear", sale.saleId]);
   }
 
-  /*saleReport(sale: SaleResponse) {
-    this._saleService.saleReport(sale);
-  }*/
+  saleReport(saleData: SaleResponse) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = saleData;
+
+    this._dialog
+      .open(SaleChangeComponent, {
+        data: dialogConfig,
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.setGetInputsSale(true);
+        }
+      });
+  }
 
   saleCancel(sale: SaleResponse) {
     Swal.fire({
@@ -130,6 +147,6 @@ export class SaleListComponent implements OnInit {
   }
 
   newSale() {
-    this._router.navigate(["/proceso-ventas/crear"]);
+    this._router.navigate(["/proceso-venta/crear"]);
   }
 }

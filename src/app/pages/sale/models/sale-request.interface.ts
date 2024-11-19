@@ -1,18 +1,26 @@
 export interface SaleRequest {
+  voucherTypeId: number;
+  customerId: number;
+  quoteId: number;
+  projectId: number;
   observation: string;
   subtotal: number;
+  applyIVA: number;
   iva: number;
-  totalAmount: number;
-  warehouseId: number;
-  clientId: number;
-  voucherNumber: string;
-  voucherDocumentTypeId: number;
+  discount: number;
+  total: number;
+  statusId: number;
   saleDetails: SaleDetailRequest[];
 }
 
 export interface SaleDetailRequest {
-  productId: number;
+  productServiceId: number;
   quantity: number;
-  unitSalePrice: number;
+  price: number;
   total: number;
+}
+
+export interface SaleUpdateRequest {
+  saleId: number;
+  statusId: number;
 }

@@ -7,7 +7,10 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment as env } from "src/environments/environment";
 import { getIcon } from "@shared/functions/helpers";
-import { SaleRequest } from "../models/sale-request.interface";
+import {
+  SaleRequest,
+  SaleUpdateRequest,
+} from "../models/sale-request.interface";
 import {
   SaleByIdResponse,
   SaleResponse,
@@ -39,7 +42,7 @@ export class SaleService {
 
   private transformSaleData(response: BaseResponse): BaseResponse {
     response.data.forEach((sale: SaleResponse) => {
-      sale.icReport = getIcon("icCloudDownload", "Descargar Factura", true);
+      sale.icReport = getIcon("icChange", "Cambiar Status", true);
       sale.icVisibility = getIcon("icVisibility", "Ver Detalle de Venta", true);
       sale.icCancel = getIcon("icCancel", "Anular Venta", true);
     });
@@ -89,5 +92,10 @@ export class SaleService {
         }
       })
     );
+  }
+
+  saleEdit(sale: SaleUpdateRequest) {
+    const requestUrl = `${env.api}${endpoint.SALE_EDIT}`;
+    return this._http.put<BaseResponse>(requestUrl, sale);
   }
 }

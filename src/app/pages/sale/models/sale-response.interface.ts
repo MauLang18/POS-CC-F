@@ -1,46 +1,51 @@
 export interface SaleResponse {
   saleId: number;
   voucherNumber: string;
-  provider: string;
-  warehouse: string;
-  totalAmount: number;
-  dateOfSale: Date;
+  customer: string;
+  total: number;
+  auditCreateDate: Date;
+  status: string;
   icReport: object;
   icVisibility: object;
   icCancel: object;
 }
 
 export interface ProductDetailsResponse {
-  productId: number;
+  productServiceId: number;
   image: string;
   code: string;
   name: string;
   category: string;
   quantity: number;
-  unitSalePrice: number;
-  totalAmount: number;
+  price: number;
+  total: number;
   icAdd: object;
 }
 
 export interface SaleByIdResponse {
   saleId: number;
+  voucherTypeId: number;
   voucherNumber: string;
-  voucherDocumentTypeId: number;
+  customerId: number;
+  projectId: number;
+  quoteId: number;
+  paymentMethodId: number;
   observation: string;
   subTotal: number;
+  applyIVA: number;
   iva: number;
-  totalAmount: number;
-  clientId: number;
-  warehouseId: number;
+  discount: number;
+  total: number;
+  statusId: number;
   saleDetails: SaleDetailByIdResponse[];
 }
 
 export interface SaleDetailByIdResponse {
-  productId: number;
+  productServiceId: number;
   image: string;
   code: string;
   name: string;
   quantity: number;
-  unitSalePrice: number;
-  totalAmount: number;
+  price: number;
+  total: number;
 }

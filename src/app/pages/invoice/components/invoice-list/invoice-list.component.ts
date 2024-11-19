@@ -11,6 +11,7 @@ import { InvoiceManageComponent } from "../invoice-manage/invoice-manage.compone
 import { InvoiceResponse } from "../../models/invoice-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { AlertService } from "@shared/services/alert.service";
 
 @Component({
   selector: "vex-invoice-list",
@@ -24,6 +25,7 @@ export class InvoiceListComponent implements OnInit {
   constructor(
     customTitle: CustomTitleService,
     public _invoiceService: InvoiceService,
+    private _alert: AlertService,
     public _dialog: MatDialog
   ) {
     customTitle.set("Facturas");
@@ -106,8 +108,8 @@ export class InvoiceListComponent implements OnInit {
         this.invoiceEdit(invoice);
         break;
       case "report":
-          this.invoiceReport(invoice);
-          break;
+        this.invoiceReport(invoice);
+        break;
     }
 
     return false;
@@ -132,7 +134,33 @@ export class InvoiceListComponent implements OnInit {
   }
 
   invoiceReport(invoice: InvoiceResponse) {
+    this._alert.confirm({
+      title: "¿Qué acción deseas realizar?",
+      message:
+        "¿Quieres solo descargar el archivo o descargar y enviarlo por correo?",
+      buttons: [
+        {
+          text: "Solo descargar",
+          action: () => {
+            this.downloadQuoteReport(invoice);
+          },
+        },
+        {
+          text: "Descargar y enviar por correo",
+          action: () => {
+            this.downloadAndSendQuoteEmailReport(invoice);
+          },
+        },
+      ],
+    });
+  }
+
+  downloadQuoteReport(invoice: InvoiceResponse) {
     this._invoiceService.invoiceReport(invoice);
+  }
+
+  downloadAndSendQuoteEmailReport(invoice: InvoiceResponse) {
+    this._invoiceService.invoiceEmailReport(invoice);
   }
 
   setGetInputsInvoices(refresh: boolean) {

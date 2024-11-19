@@ -7,14 +7,17 @@ import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment as env } from "src/environments/environment";
-import { InvoiceRequest, InvoiceUpdateRequest } from "../models/invoice-request.interface";
+import {
+  InvoiceRequest,
+  InvoiceUpdateRequest,
+} from "../models/invoice-request.interface";
 import {
   InvoiceByIdResponse,
   InvoiceResponse,
 } from "../models/invoice-response.interface";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class InvoiceService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
@@ -36,7 +39,11 @@ export class InvoiceService {
       map((resp: BaseResponse) => {
         resp.data.forEach(function (prov: InvoiceResponse) {
           prov.icEdit = getIcon("icEdit", "Editar Factura", true);
-          prov.icDownload = getIcon("icDownload", "Descargar y Enviar Factura", true);
+          prov.icDownload = getIcon(
+            "icDownload",
+            "Descargar y Enviar Factura",
+            true
+          );
         });
         return resp;
       })
@@ -61,9 +68,7 @@ export class InvoiceService {
     );
   }
 
-  invoiceEdit(
-    invoice: InvoiceUpdateRequest 
-  ): Observable<BaseResponse> {
+  invoiceEdit(invoice: InvoiceUpdateRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.INVOICE_EDIT}`;
     return this._http.put<BaseResponse>(requestUrl, invoice);
   }
@@ -85,13 +90,33 @@ export class InvoiceService {
     this._http
       .get(requestUrl, { responseType: "blob", observe: "response" })
       .subscribe((response) => {
-        let fileName = `${data.voucherNumber}.pdf`; 
+        let fileName = `${data.voucherNumber}.pdf`;
 
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(response.body);
         link.download = fileName;
         link.click();
 
+        // Cleanup
+        link.remove();
+        window.URL.revokeObjectURL(link.href);
+      });
+  }
+
+  invoiceEmailReport(data: InvoiceResponse): void {
+    const requestUrl = `${env.api}${endpoint.INVOICE_EMAIL_REPORT}${data.invoiceId}`;
+
+    this._http
+      .get(requestUrl, { responseType: "blob", observe: "response" })
+      .subscribe((response) => {
+        let fileName = `${data.voucherNumber}.pdf`;
+
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(response.body);
+        link.download = fileName;
+        link.click();
+
+        // Cleanup
         link.remove();
         window.URL.revokeObjectURL(link.href);
       });

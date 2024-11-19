@@ -12,9 +12,10 @@ import { SharedModule } from "@shared/shared.module";
 import { SaleRoutingModule } from "./sale-routing.module";
 import { SaleListComponent } from "./components/sale-list/sale-list.component";
 import { SaleCreateComponent } from './components/sale-create/sale-create.component';
+import { SaleChangeComponent } from './components/sale-change/sale-change.component';
 
 @NgModule({
-  declarations: [SaleListComponent, SaleCreateComponent],
+  declarations: [SaleListComponent, SaleCreateComponent, SaleChangeComponent],
   imports: [
     CommonModule,
     SaleRoutingModule,

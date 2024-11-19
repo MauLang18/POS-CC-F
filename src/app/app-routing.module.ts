@@ -165,6 +165,11 @@ const childrenRoutes: VexRoutes = [
     },
   },
   {
+    path: "proceso-venta",
+    loadChildren: () =>
+      import("./pages/sale/sale.module").then((m) => m.SaleModule),
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

@@ -36,8 +36,8 @@ export class SaleDetailService {
     response.data.forEach((product: ProductDetailsResponse) => {
       product.icAdd = getIcon("icAdd", "Agregar producto al detalle", true);
       product.quantity = 0;
-      product.unitSalePrice = product.unitSalePrice;
-      product.totalAmount = 0;
+      product.price = product.price;
+      product.total = 0;
     });
 
     return response;
