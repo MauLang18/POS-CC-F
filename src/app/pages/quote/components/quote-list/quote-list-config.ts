@@ -3,8 +3,8 @@ import { SearchOptions } from "@shared/models/search-options.interface";
 import { GenericValidators } from "@shared/validators/generic-validators";
 import {
   ProductDetailsResponse,
-  SaleResponse,
-} from "../../models/sale-response.interface";
+  QuoteResponse,
+} from "../../models/quote-response.interface";
 import { IconsService } from "@shared/services/icons.service";
 
 const searchOptions: SearchOptions[] = [
@@ -12,6 +12,14 @@ const searchOptions: SearchOptions[] = [
     label: "Cliente",
     value: 1,
     placeholder: "Buscar por Cliente",
+    validation: [GenericValidators.defaultName],
+    validation_desc: "Sólo se permite letras y/o números en esta búsqueda.",
+    icon: "icName",
+  },
+  {
+    label: "Voucher",
+    value: 2,
+    placeholder: "Buscar por Vocuher",
     validation: [GenericValidators.defaultName],
     validation_desc: "Sólo se permite letras y/o números en esta búsqueda.",
     icon: "icName",
@@ -37,7 +45,7 @@ const searchOptionsProducts: SearchOptions[] = [
   },
 ];
 
-const tableColumns: TableColumns<SaleResponse>[] = [
+const tableColumns: TableColumns<QuoteResponse>[] = [
   {
     label: "VOUCHER",
     cssLabel: ["font-bold", "text-sm"],
@@ -53,48 +61,48 @@ const tableColumns: TableColumns<SaleResponse>[] = [
   {
     label: "CLIENTE",
     cssLabel: ["font-bold", "text-sm"],
-    property: "client",
+    property: "customer",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "textUppercase",
     sticky: true,
     sort: true,
-    sortProperty: "client",
-    visible: true,
-    download: true,
-  },
-  {
-    label: "ALMACÉN",
-    cssLabel: ["font-bold", "text-sm"],
-    property: "warehouse",
-    cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "textUppercase",
-    sticky: true,
-    sort: true,
-    sortProperty: "warehouse",
+    sortProperty: "customer",
     visible: true,
     download: true,
   },
   {
     label: "MONTO TOTAL",
     cssLabel: ["font-bold", "text-sm"],
-    property: "totalAmount",
+    property: "total",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "currency",
     sticky: true,
     sort: true,
-    sortProperty: "totalAmount",
+    sortProperty: "total",
     visible: true,
     download: true,
   },
   {
-    label: "F. DE VENTA",
+    label: "F. DE COTIZACIÓN",
     cssLabel: ["font-bold", "text-sm"],
-    property: "dateOfSale",
+    property: "auditCreateDate",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "datetime",
     sticky: true,
     sort: true,
-    sortProperty: "dateOfSale",
+    sortProperty: "auditCreateDate",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "STATUS",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "status",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "textUppercase",
+    sticky: true,
+    sort: true,
+    sortProperty: "status",
     visible: true,
     download: true,
   },
@@ -190,24 +198,24 @@ const tableColumnsProducts: TableColumns<ProductDetailsResponse>[] = [
   {
     label: "PRECIO U.",
     cssLabel: ["font-bold", "text-xxs"],
-    property: "unitSalePrice",
+    property: "price",
     cssProperty: ["font-semibold", "text-xs", "text-left"],
     type: "price",
     sticky: false,
     sort: true,
-    sortProperty: "unitSalePrice",
+    sortProperty: "price",
     visible: true,
     download: true,
   },
   {
     label: "TOTAL",
     cssLabel: ["font-bold", "text-xxs"],
-    property: "totalAmount",
+    property: "total",
     cssProperty: ["font-semibold", "text-xs", "text-left"],
     type: "total",
     sticky: false,
     sort: true,
-    sortProperty: "totalAmount",
+    sortProperty: "total",
     visible: true,
     download: true,
   },
@@ -244,7 +252,7 @@ const resetFilters = {
 const getInputs: string = "";
 
 export const componentSettings = {
-  icPurcharse: IconsService.prototype.getIcon("icSales"),
+  icPurcharse: IconsService.prototype.getIcon("icQuotes"),
   searchOptions,
   searchOptionsProducts,
   tableColumns,
@@ -254,5 +262,5 @@ export const componentSettings = {
   filters,
   resetFilters,
   getInputs,
-  filename: "listado-de-ventas",
+  filename: "listado-de-cotizaciones",
 };

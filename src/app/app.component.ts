@@ -166,7 +166,7 @@ export class AppComponent {
           {
             type: "link",
             label: "Cotizaciones",
-            route: "cotizaciones",
+            route: "proceso-cotizacion",
           },
           {
             type: "link",

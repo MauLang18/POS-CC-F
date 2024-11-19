@@ -29,6 +29,7 @@ import icAddDetail from "@iconify/icons-ic/twotone-add";
 import icDepartment from "@iconify/icons-ic/twotone-domain";
 import icLocation from "@iconify/icons-ic/twotone-map";
 import icDownload from "@iconify/icons-ic/file-download";
+import icChange from "@iconify/icons-ic/twotone-change-circle";
 
 @Injectable({
   providedIn: "root",
@@ -124,6 +125,9 @@ export class IconsService {
     }
     if (icon == "icDownload") {
       return icDownload;
+    }
+    if (icon == "icChange") {
+      return icChange;
     }
   }
 }

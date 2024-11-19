@@ -210,26 +210,26 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  substractQuantitySale(row: any) {
+  substractQuantity(row: any) {
     if (row.quantity > 0) {
       row.quantity--;
     }
-    this.calculateTotalAmountSale(row);
+    this.calculateTotal(row);
   }
 
-  increaseQuantitySale(row: any) {
+  increaseQuantity(row: any) {
     row.quantity++;
-    this.calculateTotalAmountSale(row);
+    this.calculateTotal(row);
   }
 
-  calculateTotalAmountSale(row: any) {
+  calculateTotal(row: any) {
     const quantity = row.quantity;
-    const unitSalePrice = row.unitSalePrice;
+    const price = row.price;
 
-    if (quantity || unitSalePrice) {
-      row.totalAmount = (quantity * unitSalePrice).toFixed(2);
+    if (quantity || price) {
+      row.total = (quantity * price).toFixed(2);
     } else {
-      row.totalAmount = "0.00";
+      row.total = "0.00";
     }
   }
 }

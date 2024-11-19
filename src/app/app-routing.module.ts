@@ -115,6 +115,11 @@ const childrenRoutes: VexRoutes = [
     loadChildren: () =>
       import("./pages/status/status.module").then((m) => m.StatusModule),
   },
+  {
+    path: "proceso-cotizacion",
+    loadChildren: () =>
+      import("./pages/quote/quote.module").then((m) => m.QuoteModule),
+  },
   // {
   //   path: "clientes",
   //   loadChildren: () =>
