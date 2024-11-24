@@ -123,7 +123,11 @@
               "@iconify/icons-ic/twotone-block",
               "@iconify/icons-ic/twotone-add-shopping-cart",
               "@iconify/icons-ic/twotone-remove",
-              "@iconify/icons-ic/twotone-add"
+              "@iconify/icons-ic/twotone-add",
+              "@iconify/icons-ic/twotone-change-circle",
+              "@iconify/icons-ic/file-download",
+              "@iconify/icons-ic/twotone-domain",
+              "@iconify/icons-ic/twotone-map"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
