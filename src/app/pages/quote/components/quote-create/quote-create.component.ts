@@ -305,6 +305,7 @@ export class QuoteCreateComponent implements OnInit {
             },
           ],
         });
+        this.back();
       } else {
         this._alert.warn("Atención", resp.message);
       }
