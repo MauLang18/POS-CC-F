@@ -5,6 +5,8 @@ export interface InvoiceRequest {
   installmentsCount: number;
   paymentMethodId: number;
   statusId: number;
+  paymentDate: Date;
+  issueDate: Date;
 }
 
 export interface InvoiceUpdateRequest {
