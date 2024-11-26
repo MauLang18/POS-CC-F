@@ -106,7 +106,7 @@ const childrenRoutes: VexRoutes = [
       ),
   },
   {
-    path: "proyectos",
+    path: "proceso-proyecto",
     loadChildren: () =>
       import("./pages/project/project.module").then((m) => m.ProjectModule),
   },

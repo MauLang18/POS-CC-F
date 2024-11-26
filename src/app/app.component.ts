@@ -94,7 +94,7 @@ export class AppComponent {
           {
             type: "link",
             label: "Proyectos",
-            route: "proyectos",
+            route: "proceso-proyecto",
           },
         ],
       },

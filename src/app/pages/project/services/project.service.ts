@@ -38,17 +38,17 @@ export class ProjectService {
     return this._http.get<BaseResponse>(requestUrl).pipe(
       map((resp: BaseResponse) => {
         resp.data.forEach(function (prov: ProjectResponse) {
-          switch (prov.state) {
-            case 0:
-              prov.badgeColor = "text-gray bg-gray-light";
-              break;
-            case 1:
-              prov.badgeColor = "text-green bg-green-light";
-              break;
-            default:
-              prov.badgeColor = "text-gray bg-gray-light";
-              break;
-          }
+          // switch (prov.state) {
+          //   case 0:
+          //     prov.badgeColor = "text-gray bg-gray-light";
+          //     break;
+          //   case 1:
+          //     prov.badgeColor = "text-green bg-green-light";
+          //     break;
+          //   default:
+          //     prov.badgeColor = "text-gray bg-gray-light";
+          //     break;
+          // }
           prov.icEdit = getIcon("icEdit", "Editar Proyecto", true);
           prov.icDelete = getIcon("icDelete", "Eliminar Proyecto", true);
         });

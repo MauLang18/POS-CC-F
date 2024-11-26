@@ -7,10 +7,11 @@ import { ProjectService } from "../../services/project.service";
 import { componentSettings } from "./project-list-config";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { ProjectManageComponent } from "../project-manage/project-manage.component";
+// import { ProjectManageComponent } from "../project-manage/project-manage.component";
 import { ProjectResponse } from "../../models/project-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "vex-project-list",
@@ -24,7 +25,8 @@ export class ProjectListComponent implements OnInit {
   constructor(
     customTitle: CustomTitleService,
     public _projectService: ProjectService,
-    public _dialog: MatDialog
+    public _dialog: MatDialog,
+    private _router: Router
   ) {
     customTitle.set("Proyectos");
   }
@@ -83,20 +85,6 @@ export class ProjectListComponent implements OnInit {
     this.component.getInputs = str;
   }
 
-  openDialogRegister() {
-    this._dialog
-      .open(ProjectManageComponent, {
-        disableClose: true,
-        width: "400px",
-      })
-      .afterClosed()
-      .subscribe((res) => {
-        if (res) {
-          this.setGetInputsProjects(true);
-        }
-      });
-  }
-
   rowClick(rowClick: RowClick<ProjectResponse>) {
     let action = rowClick.action;
     let project = rowClick.row;
@@ -113,22 +101,16 @@ export class ProjectListComponent implements OnInit {
     return false;
   }
 
-  projectEdit(projectData: ProjectResponse) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = projectData;
+  projectViewDetail(project: ProjectResponse) {
+    this._router.navigate(["/proceso-proyecto/crear", project.projectId]);
+  }
 
-    this._dialog
-      .open(ProjectManageComponent, {
-        data: dialogConfig,
-        disableClose: true,
-        width: "400px",
-      })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.setGetInputsProjects(true);
-        }
-      });
+  newProject() {
+    this._router.navigate(["/proceso-proyecto/crear"]);
+  }
+
+  projectEdit(projectData: ProjectResponse) {
+    this._router.navigate(["/proceso-proyecto/crear", projectData.projectId]);
   }
 
   projectRemove(projectData: ProjectResponse) {

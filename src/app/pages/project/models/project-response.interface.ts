@@ -8,8 +8,6 @@ export interface ProjectResponse {
   endDate: Date;
   status: string;
   auditCreateDate: Date;
-  state: number;
-  stateProject: any;
   badgeColor: string;
   icDownload: any;
   icEdit: any;
@@ -25,5 +23,11 @@ export interface ProjectByIdResponse {
   startDate: Date;
   endDate: Date;
   statusId: number;
-  state: number;
+  projectDetails: ProjectDetailByIdResponse[];
+}
+
+export interface ProjectDetailByIdResponse {
+  requirement: string;
+  stateId: number;
+  stateProject: string;
 }

@@ -6,7 +6,12 @@ export interface ProjectRequest {
   startDate: Date;
   endDate: Date;
   statusId: number;
-  state: number;
+  projectDetails: ProjectDetailRequest[];
+}
+
+export interface ProjectDetailRequest {
+  requirement: string;
+  stateId: number;
 }
 
 export interface ProjectUpdateRequest {
@@ -18,5 +23,5 @@ export interface ProjectUpdateRequest {
   startDate: Date;
   endDate: Date;
   statusId: number;
-  state: number;
+  projectDetails: ProjectDetailRequest[];
 }

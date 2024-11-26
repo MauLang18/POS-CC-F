@@ -6,55 +6,49 @@
       >
         <ic-icon
           @scaleIn
-          [icon]="component.icProject"
-          class="hidden sm:block"
+          [icon]="component.icproject"
+          class="hidden sm:block mt-4"
         ></ic-icon>
-        <span @fadeInRight class="ml-4 block">Gestión de Proyectos</span>
+        <span @fadeInRight class="ml-4 mt-4 block">Gestión de Proyectos</span>
       </h2>
-      <div class="flex items-center justify-end w-full mt-5">
-        <div class="flex justify-between">
-          <app-filter-date-range-ymd
-            (rangeDate)="searchDateRange($event)"
-            [start]="component.filters.startDate"
-            [end]="component.filters.endDate"
-          ></app-filter-date-range-ymd>
-          <app-button-reset-filters
-            (buttonClick)="resetFilters()"
-          ></app-button-reset-filters>
-        </div>
-        <div class="flex justify-between ml-6">
-          <app-search-box-multiple
-            [searchOptions]="component.searchOptions"
-            (search)="search($event)"
-            [currentValue]="component.filters.textFilter"
-          >
-          </app-search-box-multiple>
-        </div>
-        <div>
-          <app-export-excel
-            [url]="getDownloadUrl"
-            [getInputs]="component.getInputs"
-            [filename]="component.filename"
-          >
-          </app-export-excel>
-        </div>
+    </div>
+    <div class="flex space-x-10 justify-end">
+      <div class="flex space-y-0">
+        <app-filter-date-range-ymd
+          (rangeDate)="searchDateRange($event)"
+          [start]="component.filters.startDate"
+          [end]="component.filters.endDate"
+        ></app-filter-date-range-ymd>
+        <app-button-reset-filters
+          (buttonClick)="resetFilters()"
+        ></app-button-reset-filters>
       </div>
+
+      <div class="hidden md:flex space-x-0">
+        <app-search-box-multiple
+          [searchOptions]="component.searchOptions"
+          (search)="search($event)"
+          [currentValue]="component.filters.textFilter"
+        ></app-search-box-multiple>
+        <app-export-excel
+          [url]="getDownloadUrl"
+          [getInputs]="component.getInputs"
+          [filename]="component.filename"
+        ></app-export-excel>
+      </div>
+
+      <button
+        class="bg-accent text-accent-contrast"
+        mat-button
+        (click)="newProject()"
+      >
+        Nuevo Proyecto
+      </button>
     </div>
   </div>
-  <div class="-mt-14 pt-0 overflow-hidden flex">
+  <div class="-mt-18 pt-0 overflow-hidden flex">
     <mat-drawer-container class="bg-transparent flex-auto flex">
       <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
-        <app-menu
-          class="hidden sm:block mr-6"
-          [currentMenu]="component.getInputs.stateFilter"
-          [items]="component.menuItems"
-          [buttonShow]="true"
-          buttonLabel="AGREGAR"
-          (filterChange)="setMenu($event)"
-          (buttonClick)="openDialogRegister()"
-        >
-        </app-menu>
-
         <div class="card h-full overflow-hidden flex-auto">
           <app-list-table
             (rowClick)="rowClick($event)"
