@@ -8,9 +8,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { IconsService } from "@shared/services/icons.service";
 
 @Component({
-  selector: "vex-Quote-report",
-  templateUrl: "./Quote-report.component.html",
-  styleUrls: ["./Quote-report.component.scss"],
+  selector: "vex-quote-report",
+  templateUrl: "./quote-report.component.html",
+  styleUrls: ["./quote-report.component.scss"],
 })
 export class QuoteReportComponent implements OnInit, AfterViewInit {
   pdfDoc: any;
