@@ -12,6 +12,7 @@ import { InvoiceResponse } from "../../models/invoice-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import Swal from "sweetalert2";
 import { AlertService } from "@shared/services/alert.service";
+import { InvoiceReportComponent } from "../invoice-report/invoice-report.component";
 
 @Component({
   selector: "vex-invoice-list",
@@ -134,33 +135,10 @@ export class InvoiceListComponent implements OnInit {
   }
 
   invoiceReport(invoice: InvoiceResponse) {
-    this._alert.confirm({
-      title: "¿Qué acción deseas realizar?",
-      message:
-        "¿Quieres solo descargar el archivo o descargar y enviarlo por correo?",
-      buttons: [
-        {
-          text: "Solo descargar",
-          action: () => {
-            this.downloadQuoteReport(invoice);
-          },
-        },
-        {
-          text: "Descargar y enviar por correo",
-          action: () => {
-            this.downloadAndSendQuoteEmailReport(invoice);
-          },
-        },
-      ],
+    const dialogRef = this._dialog.open(InvoiceReportComponent, {
+      width: "400px",
+      data: invoice,
     });
-  }
-
-  downloadQuoteReport(invoice: InvoiceResponse) {
-    this._invoiceService.invoiceReport(invoice);
-  }
-
-  downloadAndSendQuoteEmailReport(invoice: InvoiceResponse) {
-    this._invoiceService.invoiceEmailReport(invoice);
   }
 
   setGetInputsInvoices(refresh: boolean) {

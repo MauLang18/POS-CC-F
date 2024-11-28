@@ -84,8 +84,21 @@ export class InvoiceService {
     );
   }
 
-  invoiceReport(data: InvoiceResponse): void {
-    const requestUrl = `${env.api}${endpoint.INVOICE_REPORT}${data.invoiceId}`;
+  getInvoiceReport(
+    data: any,
+    reportType: string,
+    templateId: number
+  ): Observable<Blob> {
+    const requestUrl = `${env.api}${endpoint.VIEW_REPORT}${data.invoiceId}?templateId=${templateId}&reportType=${reportType}`;
+    return this._http.get<Blob>(requestUrl, { responseType: "blob" as "json" });
+  }
+
+  invoiceReport(
+    data: InvoiceResponse,
+    reportType: string,
+    templateId: number
+  ): void {
+    const requestUrl = `${env.api}${endpoint.DOWNLOAD_REPORT}${data.invoiceId}?reportType=${reportType}&templateId=${templateId}`;
 
     this._http
       .get(requestUrl, { responseType: "blob", observe: "response" })
@@ -103,8 +116,12 @@ export class InvoiceService {
       });
   }
 
-  invoiceEmailReport(data: InvoiceResponse): void {
-    const requestUrl = `${env.api}${endpoint.INVOICE_EMAIL_REPORT}${data.invoiceId}`;
+  invoiceEmailReport(
+    data: InvoiceResponse,
+    reportType: string,
+    templateId: number
+  ): void {
+    const requestUrl = `${env.api}${endpoint.SEND_REPORT}${data.invoiceId}?reportType=${reportType}&templateId=${templateId}`;
 
     this._http
       .get(requestUrl, { responseType: "blob", observe: "response" })

@@ -63,8 +63,12 @@ export class QuoteService {
     );
   }
 
-  quoteReport(data: QuoteResponse): void {
-    const requestUrl = `${env.api}${endpoint.QUOTE_REPORT}${data.quoteId}`;
+  quoteReport(
+    data: QuoteResponse,
+    reportType: string,
+    templateId: number
+  ): void {
+    const requestUrl = `${env.api}${endpoint.DOWNLOAD_REPORT}${data.quoteId}?reportType=${reportType}&templateId=${templateId}`;
 
     this._http
       .get(requestUrl, { responseType: "blob", observe: "response" })
@@ -82,8 +86,12 @@ export class QuoteService {
       });
   }
 
-  quoteEmailReport(data: QuoteResponse): void {
-    const requestUrl = `${env.api}${endpoint.QUOTE_EMAIL_REPORT}${data.quoteId}`;
+  quoteEmailReport(
+    data: QuoteResponse,
+    reportType: string,
+    templateId: number
+  ): void {
+    const requestUrl = `${env.api}${endpoint.SEND_REPORT}${data.quoteId}?reportType=${reportType}&templateId=${templateId}`;
 
     this._http
       .get(requestUrl, { responseType: "blob", observe: "response" })

@@ -13,9 +13,10 @@ import { FilterDateRangeYmdComponent } from "@shared/components/reusables/filter
 import { ButtonResetFiltersComponent } from "@shared/components/reusables/button-reset-filters/button-reset-filters.component";
 import { SelectAutocompleteComponent } from "@shared/components/reusables/select-autocomplete/select-autocomplete.component";
 import { QuoteChangeComponent } from './components/quote-change/quote-change.component';
+import { QuoteReportComponent } from './components/quote-report/quote-report.component';
 
 @NgModule({
-  declarations: [QuoteListComponent, QuoteCreateComponent, QuoteChangeComponent],
+  declarations: [QuoteListComponent, QuoteCreateComponent, QuoteChangeComponent, QuoteReportComponent],
   imports: [
     CommonModule,
     QuoteRoutingModule,

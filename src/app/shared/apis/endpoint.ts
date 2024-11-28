@@ -116,10 +116,9 @@ export const endpoint = {
   QUOTE_EDIT: "Quote/Update/",
 
   // REPORT MODULE
-  QUOTE_EMAIL_REPORT: "Report/CotizacionEmail/",
-  QUOTE_REPORT: "Report/Cotizacion/",
-  INVOICE_EMAIL_REPORT: "Report/FacturaEmail/",
-  INVOICE_REPORT: "Report/Factura/",
+  DOWNLOAD_REPORT: "Report/Download/",
+  SEND_REPORT: "Report/SendEmail/",
+  VIEW_REPORT: "Report/ViewPdf/",
 
   // SALE MODULE
   LIST_SALES: "Sale",

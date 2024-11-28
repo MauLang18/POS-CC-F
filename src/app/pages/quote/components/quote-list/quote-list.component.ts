@@ -12,6 +12,7 @@ import { QuoteResponse } from "../../models/quote-response.interface";
 import Swal from "sweetalert2";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { QuoteChangeComponent } from "../quote-change/quote-change.component";
+import { QuoteReportComponent } from "../quote-report/quote-report.component";
 
 @Component({
   selector: "vex-quote-list",
@@ -99,7 +100,10 @@ export class QuoteListComponent implements OnInit {
   }
 
   quoteReport(quote: QuoteResponse) {
-    this._quoteService.quoteReport(quote);
+    const dialogRef = this._dialog.open(QuoteReportComponent, {
+      width: "400px",
+      data: quote,
+    });
   }
 
   quoteCancel(quoteData: QuoteResponse) {

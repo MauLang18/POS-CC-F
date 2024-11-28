@@ -286,37 +286,10 @@ export class QuoteCreateComponent implements OnInit {
     this._quoteService.quoteRegister(quote).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Excelente", resp.message);
-        this._alert.confirm({
-          title: "¿Qué acción deseas realizar?",
-          message:
-            "¿Quieres solo descargar el archivo o descargar y enviarlo por correo?",
-          buttons: [
-            {
-              text: "Solo descargar",
-              action: () => {
-                this.downloadQuoteReport(resp.data);
-              },
-            },
-            {
-              text: "Descargar y enviar por correo",
-              action: () => {
-                this.downloadAndSendQuoteEmailReport(resp.data);
-              },
-            },
-          ],
-        });
         this.back();
       } else {
         this._alert.warn("Atención", resp.message);
       }
     });
-  }
-
-  downloadQuoteReport(quote: QuoteResponse) {
-    this._quoteService.quoteReport(quote);
-  }
-
-  downloadAndSendQuoteEmailReport(quote: QuoteResponse) {
-    this._quoteService.quoteEmailReport(quote);
   }
 }
