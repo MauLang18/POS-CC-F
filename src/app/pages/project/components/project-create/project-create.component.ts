@@ -25,11 +25,12 @@ export class ProjectCreateComponent implements OnInit {
   statusSelect: SelectAutoComplete[] = [];
 
   form: FormGroup;
-  requirementsForm: FormGroup; // Formulario independiente para los requerimientos
+  requirementsForm: FormGroup;
   requirements: any | ProjectDetailByIdResponse[] = [];
   projectId: number = 0;
   editMode: boolean = false;
   selectedRequirement: any = null;
+  selectedRequirementIndex: number | null = null;
 
   icRemove = IconsService.prototype.getIcon("icDelete");
   icEdit = IconsService.prototype.getIcon("icEdit");
@@ -72,7 +73,6 @@ export class ProjectCreateComponent implements OnInit {
       statusId: [0, [Validators.required]],
     });
 
-    // Inicialización del formulario para los requerimientos
     this.requirementsForm = this._fb.group({
       requirement: ["", [Validators.required]],
       stateId: [0, [Validators.required]],
@@ -123,9 +123,7 @@ export class ProjectCreateComponent implements OnInit {
   selectRequirement(requirement: any, index: number) {
     this.selectedRequirement = requirement;
     this.editMode = true;
-
-    // Guardar el índice seleccionado
-    this.selectedRequirement.index = index;
+    this.selectedRequirementIndex = index;
 
     this.requirementsForm.patchValue({
       requirement: requirement.requirement,
@@ -135,24 +133,20 @@ export class ProjectCreateComponent implements OnInit {
 
   saveRequirement() {
     if (this.editMode) {
-      // Utilizar el índice almacenado para modificar directamente el elemento
-      const index = this.selectedRequirement.index;
-
-      if (index !== undefined && index >= 0) {
-        this.requirements[index] = {
-          ...this.requirements[index],
+      if (this.selectedRequirementIndex !== null) {
+        this.requirements[this.selectedRequirementIndex] = {
+          ...this.requirements[this.selectedRequirementIndex],
           ...this.requirementsForm.value,
         };
       }
     } else {
-      // Agregar un nuevo requerimiento
       this.requirements.push(this.requirementsForm.value);
     }
 
-    // Resetear el formulario y salir del modo de edición
     this.requirementsForm.reset();
     this.editMode = false;
     this.selectedRequirement = null;
+    this.selectedRequirementIndex = null;
   }
 
   removeRequirement(index: number): void {
@@ -175,7 +169,6 @@ export class ProjectCreateComponent implements OnInit {
   }
 
   projectRegister(): void {
-    // Crear el objeto del proyecto
     const project: ProjectRequest = {
       internalName: this.form.value.internalName,
       commercialName: this.form.value.commercialName,
@@ -190,7 +183,6 @@ export class ProjectCreateComponent implements OnInit {
       })),
     };
 
-    // Registrar el proyecto
     this._projectService.projectRegister(project).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success("Proyecto registrado", resp.message);
@@ -202,7 +194,6 @@ export class ProjectCreateComponent implements OnInit {
   }
 
   projectEdit(): void {
-    // Crear el objeto del proyecto
     const project: ProjectUpdateRequest = {
       projectId: this.form.value.projectId,
       internalName: this.form.value.internalName,
