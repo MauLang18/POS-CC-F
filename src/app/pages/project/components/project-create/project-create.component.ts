@@ -124,6 +124,9 @@ export class ProjectCreateComponent implements OnInit {
     this.selectedRequirement = requirement;
     this.editMode = true;
 
+    // Guardar el índice seleccionado
+    this.selectedRequirement.index = index;
+
     this.requirementsForm.patchValue({
       requirement: requirement.requirement,
       stateId: requirement.stateId,
@@ -132,19 +135,24 @@ export class ProjectCreateComponent implements OnInit {
 
   saveRequirement() {
     if (this.editMode) {
-      const index = this.requirements.findIndex(
-        (req) => req.id === this.selectedRequirement.id
-      );
-      this.requirements[index] = {
-        ...this.selectedRequirement,
-        ...this.requirementsForm.value,
-      };
+      // Utilizar el índice almacenado para modificar directamente el elemento
+      const index = this.selectedRequirement.index;
+
+      if (index !== undefined && index >= 0) {
+        this.requirements[index] = {
+          ...this.requirements[index],
+          ...this.requirementsForm.value,
+        };
+      }
     } else {
+      // Agregar un nuevo requerimiento
       this.requirements.push(this.requirementsForm.value);
     }
 
+    // Resetear el formulario y salir del modo de edición
     this.requirementsForm.reset();
     this.editMode = false;
+    this.selectedRequirement = null;
   }
 
   removeRequirement(index: number): void {
